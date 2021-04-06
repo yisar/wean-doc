@@ -1,7 +1,20 @@
 async function handleRequest(request) {
   const { pathname } = new URL(request.url)
-  if (pathname === "/" || pathname === '/zh') {
+  if (pathname === "/" || pathname === "/zh") {
     return index()
+  } else if (pathname === "/README.md") {
+    const data = await fetch(
+      `https://raw.githubusercontent.com/ctripcorp/wean/master/docs/README.md`
+    )
+      .then((res) => res.text())
+      .then((data) => data)
+    return new Response(data, {
+      status: 200,
+      headers: {
+        server: "denosr",
+        "content-type": "text/plain",
+      },
+    })
   } else if (pathname[0] === "/") {
     const data = await fetch(
       `https://raw.githubusercontent.com/yisar/wean-doc/master/${pathname}`
