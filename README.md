@@ -14,17 +14,13 @@ wean 借助 [fre](https://github.com/yisar/fre) 实现渲染，借助 [berial](h
 
 除了基本的编译打包，wean 实现了一些先进特性：**Tree shaking**、**Module federation**、**Hot reload**，做更现代，更精简的小程序子集
 
-## QQ group
+## Quick start
 
-<img src="https://i.loli.net/2021/03/24/wYdhGJuNzZXT1QW.jpg" alt="wean logo" width="250">
+### Install
 
-### Demo
+暂时实验阶段还没有发版，可以直接跑源码，往下看
 
-- [图虫小程序 @ 飘香豆腐](https://github.com/yisar/wean-demo-tuchong)
-
-- [TodoMVC](https://github.com/ctripcorp/wean/tree/master/demo)
-
-## Run
+### Run
 
 ```shell
 $ npm install
@@ -34,13 +30,29 @@ $ wean
 
 剩下的只需要按照 [微信小程序开发文档](https://developers.weixin.qq.com/miniprogram/dev/framework/) 开发即可
 
-值得注意的是，并非所有的微信小程序的特性都被支持，简单地说，wean 只支持“现代特性”，比如只支持 esm 格式，其他格式的文件请从 [skycdn](https://www.skypack.dev/) 下载
+值得注意的是，并非所有的微信小程序的特性都被支持，简单地说，wean 只支持“现代特性”，比如只支持 esm 格式，其他格式的文件请从 [esbuild-cdn]](https://esbuild.vercel.app/fre@2.0.4/dist/fre.umd.js) 下载
+
+### Demo
+
+- [图虫小程序 @ 飘香豆腐](https://github.com/yisar/wean-demo-tuchong)
+
+- [TodoMVC](https://github.com/ctripcorp/wean/tree/master/demo)
 
 ## Motivation
 
 在 wean 之前，大量小程序工具使用 webpack 进行打包，各种 loader、plugin 导致整个开发链路变长
 
 wean 旨在解决链路问题，它自研编译器和打包器，对于标准小程序项目，可以做到开箱即用
+
+## Communication
+
+### QQ group
+
+<img src="https://i.loli.net/2021/03/24/wYdhGJuNzZXT1QW.jpg" alt="wean logo" width="250">
+
+### Trippal
+
+<img src="https://i.loli.net/2021/04/06/I6EQr3xUeXhDJ47.jpg" >
 
 ## Package
 
@@ -55,7 +67,9 @@ wean 旨在解决链路问题，它自研编译器和打包器，对于标准小
 
 ## FAQ
 
-todo...
+1. 和 taro 等有什么区别？
+
+
 
 #### License
 
