@@ -4,7 +4,7 @@ async function handleRequest(request) {
     return index()
   } else if (pathname === "/README.md") {
     const data = await fetch(
-      `https://raw.githubusercontent.com/ctripcorp/wean/master/docs/README.md`
+      `https://raw.githubusercontent.com/ctripcorp/wean/master/doc.md`
     )
       .then((res) => res.text())
       .then((data) => data)
