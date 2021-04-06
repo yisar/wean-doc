@@ -1,22 +1,14 @@
-**Fre** is a Tiny Javascript framework with Fiber. It implements the coroutine scheduler in JavaScript, and the rendering is asynchronous, which supports Time slicing and Suspense.
+**Fre** 是一个基于 Fiber 架构的前端框架，它的核心是异步渲染，主要包括时间切片和 Suspense
 
-It also has a better reconciliation algorithm, which traverses from both ends with O (n) complexity, and supports keyed.
+和 react 不同的是，fre 使用了更好的 reconcilation 算法，可以进行预处理（两端遍历）
 
-After tree shaking, project of hello world is only 2KB, but it has most features, virtual DOM, hooks API, Fragment and more.
+经过 tree shaking 后，hello world 项目只有 2kb，但它拥有很多功能，比如 hooks API，函数组件，Fragment……
 
-## Quick start
+## 快速开始
 
 ```shell
 yarn add fre
 ```
-
-### Via Vite
-
-We recommend that you use [Vite](https://github.com/vitejs/vite) to develop and build fre projects.
-
-[/richajak/vite-fre/](https://github.com/richajak/vite-fre) is a template, [/wcastand/esm-fre/](https://github.com/wcastand/esm-fre) is another one.
-
-### Usage
 
 ```js
 import { render, useState } from "fre"
@@ -66,9 +58,7 @@ export default () => {
 
 ### useState
 
-`useState` is a base API, It will receive initial state and return an Array
-
-You can use it many times, new state is available when component is rerender
+useState 是主要的一个 hook，它有一个浅表的优化，即每次 setState 都会和上次的值进行对比
 
 ```js
 function App() {
@@ -87,7 +77,7 @@ function App() {
 
 ### useReducer
 
-`useReducer` and `useState` are almost the same，but `useReducer` needs a global reducer
+useReducer 和 useState 类似，但它使用了 redux 类似的 api，有时候这有利于组织逻辑
 
 ```js
 function reducer(state, action) {
@@ -113,7 +103,7 @@ function App() {
 
 ### useEffect
 
-It is the execution and cleanup of effects, which is represented by the second parameter
+useEffect 是处理 effect 的一个 hook，它发生在宏任务中，所以可以进行 dom 操作，它的时机和规则如下：
 
 ```
 useEffect(f)       //  effect (and clean-up) every time
@@ -136,7 +126,7 @@ function App({ flag }) {
 }
 ```
 
-If it returns a function, the function can do cleanups:
+返回值是一个函数，用来清理副作用
 
 ```js
 useEffect(() => {
@@ -149,17 +139,17 @@ useEffect(() => {
 
 ### useLayout
 
-More like useEffect, but useLayout is sync and blocking UI.
+useLayout 和 useEffect 类似，但它是同步发生的，dom 还没有发生变化，会阻塞渲染
 
 ```js
 useLayout(() => {
-  document.title = "count is " + count
+  console.log(dom) // null
 }, [flag])
 ```
 
 ### useMemo
 
-`useMemo` has the same rules as `useEffect`, but `useMemo` will return a cached value.
+`useMemo` 可以缓存一个值，甚至可以用它缓存组件：
 
 ```js
 const memo = (c) => (props) => useMemo(() => c, [Object.values(props)])
@@ -167,7 +157,7 @@ const memo = (c) => (props) => useMemo(() => c, [Object.values(props)])
 
 ### useCallback
 
-`useCallback` is based `useMemo`, it will return a cached function.
+`useCallback` 基于 `useMemo`, 只不过是缓存了一个函数
 
 ```js
 const cb = useCallback(() => {
@@ -177,7 +167,7 @@ const cb = useCallback(() => {
 
 ### useRef
 
-`useRef` will return a function or an object.
+`useRef` 一般来说是一个函数或对象，对象的 current 是 dom 元素
 
 ```js
 function App() {
@@ -189,7 +179,7 @@ function App() {
 }
 ```
 
-If it uses a function, it can return a cleanup and executes when removed.
+它也可以直接是一个函数，此时可以进行清理工作
 
 ```js
 function App() {
@@ -206,7 +196,7 @@ function App() {
 
 ## Suspense
 
-This is another feature of concurrent rendering, which can achieve asynchronous refresh without the aid of state.
+Suspense 是异步渲染的另一个用例，它的核心是当 Promise 被 throw 出去的时候，组件会进行回退，并悬停，等到 Promise resolve 后再继续渲染
 
 ```js
 const LazyComponent = lazy(Component)
@@ -236,19 +226,19 @@ plugins: [
 
 ## Compare with other frameworks
 
-The comparison is difficult because the roadmap and trade-offs of each framework are different, but we have to do so.
+每个框架的权衡和发展路线不同，所以强行进行比对是不科学的，但是……我们可以辩证地看待它们
 
 - react
 
-React is the source of inspiration for fre. Their implementation and asynchronous rendering are similar. The most amazing thing is **concurrent mode**, which means that react and fre have the same roadmap -- **Exploring concurrent use cases**.
+react 是 fre 的灵感来源，所以很大程度上，fre 将会追随 react，它们也拥有一致的发展路线——探索 Concurrent Mode
 
-But at the same time, fre has obvious advantages in reconciliation algorithm and bundle size.
+但有所不同的是，fre 会更加注重核心算法和数据结构
 
 - vue / preact
 
-To some extent, vue and preact are similar. They have similar synchronous rendering, only the API is different.
+从某种角度上，vue 和 preact 是类似的，它们都是同步渲染的框架，对用户来说可能代表不了什么
 
-The reconciliation algorithm of fre is similar to vue, but the biggest difference is that vue/preact do not support concurrent mode, this means that the roadmap is totally different.
+但是同步渲染的实现方式是完全不同的，最终结果是 vue 或 preact 无法支持时间切片
 
 | framework | concurrent | reconcilation algorithm | bundle size |
 | --------- | ---------- | ----------------------- | ----------- |
@@ -259,6 +249,6 @@ The reconciliation algorithm of fre is similar to vue, but the biggest differenc
 
 ## License
 
-MIT @yisar 
+MIT @yisar
 
 Fre is inspired by many libraries, pay our respects to them: [react](https://github.com/facebook/react) [snabbdom](https://github.com/snabbdom/snabbdom) [preact](https://github.com/preactjs/preact) [anu](https://github.com/RubyLouvre/anu)
