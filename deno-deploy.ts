@@ -4,7 +4,7 @@ async function handleRequest(request) {
     return index()
   } else if (pathname[0] === "/") {
     const data = await fetch(
-      `https://raw.githubusercontent.com/yisar/fre/master/docs/${pathname}`
+      `https://raw.githubusercontent.com/yisar/wean-doc/master/${pathname}`
     )
       .then((res) => res.text())
       .then((data) => data)
@@ -22,7 +22,7 @@ async function handleRequest(request) {
 
 async function index() {
   const data = await fetch(
-    `https://raw.githubusercontent.com/yisar/fre/master/docs/index.html`
+    `https://raw.githubusercontent.com/yisar/wean-doc/master/index.html`
   )
     .then((res) => res.text())
     .then((data) => data)
